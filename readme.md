@@ -75,3 +75,9 @@ You will see @prisma under node_modules folder
 ```
 npx prisma generate
 ```
+15. Next create seed.ts to insert test data to the database. Import PrismaClient. Create a new PrismaClient object. In async await function main(), use the object to create data for table
+i.e. prisma.user.create() where user is table name.
+
+16. use `npx ts-node seed.ts` to run the node ts file.
+
+17. In psql use `SELECT * FROM "User";` to check whether the data is created.
