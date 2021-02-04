@@ -80,4 +80,13 @@ i.e. prisma.user.create() where user is table name.
 
 16. use `npx ts-node seed.ts` to run the node ts file.
 
-17. In psql use `SELECT * FROM "User";` to check whether the data is created.
+17. To run psql 
+```
+docker-compose up -d
+psql -U prisma -h localhost
+Enter password as prisma
+```
+
+18. In psql 
+connect to database as `\c mydb` 
+use `SELECT * FROM "User";` to check whether the data is created.
