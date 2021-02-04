@@ -25,6 +25,7 @@ async function main() {
             }
         }
     )
+    console.log('Teacher: ', teacher);
 
     const weekFromNow = add(new Date(), { days: 7 })
     const twoWeeksFromNow = add(new Date(), { weeks: 2 })
@@ -71,7 +72,7 @@ async function main() {
         }
     }
     )
-console.log(`Course details: ${course}`);
+console.log('Course details: ',course);
 
 const radhai = await prisma.user.create(
     {
@@ -138,7 +139,7 @@ const testresult = await prisma.testResult.create(
         },
     },
     )
-console.log(`Test result ${testresult}`)
+console.log(`Test result`, testresult)
 
 const radhaiTestResults = [99, 98, 97, 100]
 const shivaTestResults = [65, 75, 85, 90]
@@ -190,11 +191,48 @@ for (const test of course.tests) {
         }
     )
     counter++;
-    console.log(`Radhai Results ${radhaiTR}`);
-    console.log(`Shiva test Results ${shivaTR}`);
+    console.log(`Radhai Results`, radhaiTR);
+    console.log(`Shiva test Results`, shivaTR);
 }
 
+//Aggregate operations
+for (const test of course.tests) {
+    const results = await prisma.testResult.aggregate({
+        avg: {
+            result: true
+        },
+        max: {
+            result: true
+        },
+        min: {
+            result: true
+        },
+        count: true,
+        where: {
+            testId: test.id
+        }
+    })
+    console.log(`Test results of ${test.name}`, results)
+}
 
+    const results = await prisma.testResult.aggregate({
+        avg: {result: true},
+        min: {result: true},
+        max: {result: true},
+        count: true,
+        where: {student: {email: radhai.email} }
+    })
+    console.log(`Aggregate test results of ${radhai.email}: `, results);
+
+    const ShivaResults = await prisma.testResult.aggregate({
+        avg: {result: true},
+        max: {result: true},
+        min: {result: true},
+        count: true,
+        where: {student: {email: shiva.email}}
+    })
+    console.log(`Aggregate test results of ${shiva.email}:`, ShivaResults);
+    
 }
 
 main()

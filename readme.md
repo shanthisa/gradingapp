@@ -90,3 +90,13 @@ Enter password as prisma
 18. In psql 
 connect to database as `\c mydb` 
 use `SELECT * FROM "User";` to check whether the data is created.
+
+19. Create a course and related test using create: 
+20. In the tests use add function (npm i date-fns) to create day intervals of tests.
+21. Create a relation between the user created and to this course as teacher using connect: 
+22. Create multiple users and connecting them to a course
+23. Creating test results for these student users using for(const test of course.tests){}
+24. Check results in 
+```npx prisma studio```
+25. Aggregate test results of avg, min, max for a particular test
+26. Aggregate test results of avg, min, max for a particular student
