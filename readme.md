@@ -100,3 +100,12 @@ use `SELECT * FROM "User";` to check whether the data is created.
 ```npx prisma studio```
 25. Aggregate test results of avg, min, max for a particular test
 26. Aggregate test results of avg, min, max for a particular student
+27. Create a Hapi Server and checked status 200.
+28. Created a plugin to modulate the different routes. 
+29. Next to test whether the plugin works, using Jest. So Install 
+```npm i -D jest ts-jest @types/jest```
+30. Configure jest 
+```npx ts-jest config:init```
+This creates jest.config.js file
+31. Write the test in status.test.ts
+32. Create a plugin users and create a route for creating user
