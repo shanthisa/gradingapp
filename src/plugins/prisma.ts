@@ -15,7 +15,10 @@ const prismaPlugin : Plugin<null> = {
 
         server.ext({
             type: 'onPostStop',
-            method: async (server: Server) => server.app.prisma.$disconnect()
+            method: async (server: Server) => {
+                server.app.prisma.$disconnect()
+                console.log('Server stopped. So disconnected prisma')
+            }
         })
     }
 }

@@ -109,3 +109,5 @@ use `SELECT * FROM "User";` to check whether the data is created.
 This creates jest.config.js file
 31. Write the test in status.test.ts
 32. Create a plugin users and create a route for creating user
+33. To run the test 
+  ```npx jest```
