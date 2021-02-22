@@ -1,3 +1,4 @@
+import { badImplementation } from '@hapi/boom'
 import { Server, Plugin, Request, ResponseToolkit, ServerRoute } from '@hapi/hapi'
 import * as Joi from '@hapi/joi'
 import { PrismaClient } from '@prisma/client'
@@ -29,7 +30,7 @@ const usersPlugin = {
     name: 'app/users',
     dependencies: ['prisma'],
     register: async function (server: Server) {
-        server.route({
+        server.route([{
             method: 'POST',
             path: '/users',
             handler: createUserHandler,
@@ -38,8 +39,20 @@ const usersPlugin = {
                     payload: userInputValidator
                 }
             },
-
-        })
+        },
+        {
+            method: 'GET',
+            path:`/users/{userId}`,
+            handler: getUserHandler,
+            options: {
+                validate: {
+                    params: Joi.object({
+                        userId: Joi.number().integer()
+                    })
+                }
+            }
+        }
+    ])
     },
 }
 
@@ -56,8 +69,6 @@ interface UserInput {
         website?: string
     }
 }
-
-
 
 let createUserHandler = async (request: Request, h: ResponseToolkit) => {
     const { prisma } = request.server.app
@@ -79,5 +90,25 @@ let createUserHandler = async (request: Request, h: ResponseToolkit) => {
     }
     catch {
         (error) => console.log("Error in creating user ", error)
+    }
+}
+
+let getUserHandler = async(request: Request, h: ResponseToolkit) => {
+    const {prisma} = request.server.app
+    const userId = parseInt(request.params.userId)
+    try {
+        const user = await prisma.user.findUnique({
+            where: {
+                id: userId
+            }
+        })
+        if(user) return h.response(user).code(200) 
+        else return h.response().code(404)
+    }
+    catch {
+        (err) => {
+            console.log(err)
+            return badImplementation()
+        }
     }
 }

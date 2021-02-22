@@ -28,7 +28,19 @@ describe('create user - /users - POST', () => {
         console.log("done with request");
         expect(response.statusCode).toEqual(201);
         userId = JSON.parse(response.payload)?.id
+        console.log("UserID is: ", userId)
         expect(typeof userId === 'number').toBeTruthy()
+    })
+
+    test('get created user id', async() => {
+        const response = await server.inject({
+            method: 'GET',
+            url: `/users/${userId}`,
+        })
+        console.log(`url is /users/${userId}`)
+        expect(response.statusCode).toEqual(200)
+        const user = JSON.parse(response.payload)
+        expect(user.id).toBe(userId)
     })
 
     test('create user validation', async () => {
@@ -43,8 +55,17 @@ describe('create user - /users - POST', () => {
                 }
             }
         })
-        console.log(response.payload)
         expect(response.statusCode).toEqual(400)
        
     })
+
+    test('get non existant user returns 404', async () => {
+        const response = await server.inject({
+            method: 'GET',
+            url: '/users/9999',
+        })
+        expect(response.statusCode).toEqual(404)
+    })
+
+    
 })
