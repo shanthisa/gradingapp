@@ -67,5 +67,46 @@ describe('create user - /users - POST', () => {
         expect(response.statusCode).toEqual(404)
     })
 
-    
+    test('update user with invalid user parameter', async () => {
+        const response = await server.inject({
+            method: 'PUT',
+            url: '/users/12345'
+        })
+        expect(response.statusCode).toEqual(400)
+    })
+
+    test('update user that was created', async() => {
+        const updatedFirstName = 'shanthi_updated'
+        const updatedLastName = 'sa_updated'
+        const response = await server.inject({
+            method: 'PUT',
+            url: `/users/${userId}`,
+            payload: {
+                firstName: updatedFirstName,
+                lastName: updatedLastName
+            }
+        })
+
+        expect(response.statusCode).toEqual(200)
+        const user = JSON.parse(response.payload)
+        expect(user.firstName).toEqual(updatedFirstName)
+        expect(user.lastName).toEqual(updatedLastName)
+
+    })
+
+    test('delete invalid user', async() => {
+        const response = await server.inject({
+            method: 'DELETE',
+            url: `/users/1234`
+        })
+        expect (response.statusCode).toEqual(500)
+    })
+
+    test ('delete created user', async () => {
+        const response = await server.inject({
+            method: 'DELETE',
+            url: `/users/${userId}`
+        })
+        expect(response.statusCode).toEqual(204)
+    })
 })
