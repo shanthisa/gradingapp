@@ -57,6 +57,12 @@ const usersPlugin = {
     dependencies: ['prisma'],
     register: async function (server: Server) {
         server.route([{
+            method: 'GET',
+            path: '/courses',
+            handler: getCoursesHandler,
+        },
+            
+            {
             method: 'POST',
             path: '/users',
             handler: createUserHandler,
@@ -116,6 +122,18 @@ interface UserInput {
         twitter?: string
         github?: string
         website?: string
+    }
+}
+
+async function getCoursesHandler(request: Request, h: ResponseToolkit) {
+    const {prisma} = request.server.app
+    try {
+        const courses = await prisma.course.findMany()
+        return h.response(courses).code(200)
+    }
+    
+    catch (err) {
+        console.log('Error in getting courses', err)
     }
 }
 
