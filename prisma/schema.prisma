@@ -13,13 +13,32 @@ generator client {
 model User {
   id Int @default(autoincrement()) @id
   email String @unique
-  firstName String 
-  lastName String
+  firstName String? 
+  lastName String?
   social Json?
 
   courses CourseEnrollment[]
   testResults TestResult[] @relation(name: "student")
   testsGraded TestResult[] @relation(name: "teacher")
+  tokens Token[]
+}
+
+model Token {
+  id Int @default(autoincrement()) @id
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  type TokenType
+  emailToken String?
+  valid Boolean @default(true)
+  expiration DateTime
+
+  userId Int
+  user User @relation(fields: [userId], references: [id])
+}
+
+enum TokenType {
+  email
+  API
 }
 
 model Course {

@@ -111,3 +111,19 @@ This creates jest.config.js file
 32. Create a plugin users and create a route for creating user
 33. To run the test 
   ```npx jest```
+34. Authentication is the process of verifying who a user is, while authorization is the process of verifying what they have access to.
+
+Authentication and Authorization - Part 3
+1. Create a token model which is 1-n with user, modify the first Name and lastName in user model to optional in prisma.schema
+2. migrate the schema with 
+```
+npx prisma migrate dev --preview-feature --name "add-token"
+```
+(make sure the postgres server is running while running migration)
+
+3. Install sendgrid email for email sending functionality
+npm install --save @sendgrid/mail
+4. Create the email plugin
+5. Install the following dependencies:  
+npm install --save hapi-auth-jwt2@10.1.0 jsonwebtoken@8.5.1
+npm install --save-dev @types/jsonwebtoken@8.5.0

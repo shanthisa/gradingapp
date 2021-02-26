@@ -2,6 +2,10 @@ import {ResponseToolkit, Server, server} from '@hapi/hapi';
 import status from './plugins/status';
 import prisma from './plugins/prisma';
 import usersPlugin from './plugins/users';
+import emailPlugin from './plugins/email';
+import * as hapiAuthJWT from 'hapi-auth-jwt2';
+import authPlugin from './plugins/auth';
+
 
 const serverObj : Server = server({
     host: process.env.HOST || 'localhost',
@@ -10,7 +14,7 @@ const serverObj : Server = server({
 )
 
 export async function createServer(): Promise<Server>{
-    await serverObj.register([status, prisma, usersPlugin])
+    await serverObj.register([status, prisma, usersPlugin, emailPlugin, hapiAuthJWT, authPlugin])
     await serverObj.initialize()
     return serverObj;
 }
